@@ -1,0 +1,50 @@
+#*
+ * Copyright 2010 Mario Mueller <mario.mueller.mac@me.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+<div class="gwt-Label GwbrbccL" id="admin-title"><h2>Repository Settings for &quot;${r}&quot;</h2></div>
+<form action="${servletUrl}" method="post" id="websvn_repo_settings" class="aui">
+	<div class="field-group">
+		<p>You can configure your WebSVN repository name here.</p>
+
+		<p>
+			Enter the repository name, that correspons to the last part of the url at your WebSVN server.
+			<br/>
+			If your base config says<br/>
+		<ul>
+			<li>- base Url: http://svn.example.com</li>
+			<li>- base Path: /websvn/wsvn</li>
+		</ul>
+		and your final path to the repository is <tt>myproject</tt>, then you put in <tt>/myproject</tt> in the
+		configuration field below. In case, that your crucible repository points to a specific branch, please do
+		also add it here. (e.g. <tt>http://svn.example.com/websvn/wsvn/myproject/trunk</tt> results to <tt>/myproject/trunk</tt>)
+		<b>Never add a trailing slash.</b>
+		</p>
+	</div>
+	<div class="field-group">
+		<input type="hidden" name="websvn_r" value="${r}"/>
+		<label for="websvn_repo">Repository context<span class="aui-icon icon-required"></span><span
+				class="content"> required</span></label>
+		<input class="text" type="text" id="websvn_repo" name="websvn_repo"
+			   title="Base URL of the WebSVN server" value="${repo}"/>
+	</div>
+	<div class="field-group">
+		<div class="buttons-container">
+			<div class="buttons">
+				<input class="button submit" type="submit" value="Save" id="save-btn1">
+				<a class="cancel" href="${servletUrl}">Cancel</a>
+			</div>
+		</div>
+	</div>
+</form>

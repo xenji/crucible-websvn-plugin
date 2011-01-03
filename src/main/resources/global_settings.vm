@@ -1,0 +1,67 @@
+#*
+ * Copyright 2010 Mario Mueller <mario.mueller.mac@me.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+<div class="gwt-Label" id="admin-title"><h2>WebSVN Settings</h2></div>
+<form action="${servletUrl}" method="post" id="websvn_global_settings" class="aui">
+	<div class="field-group">
+		<p>You can configure your WebSVN base url and path here.</p>
+
+		<p>
+			Enter the base url like <tt>http://websvn.example.com</tt> and the path, if any, like
+			<tt>/websvn/wsvn</tt>.
+			<br/>
+			<b>Never add a trailing slash.</b>
+		</p>
+	</div>
+	<div class="field-group">
+
+		<label for="websvn_baseUrl">Base URL<span class="aui-icon icon-required"></span><span
+				class="content"> required</span></label>
+		<input class="text" type="text" id="websvn_baseUrl" name="websvn_baseUrl"
+			   title="Base URL of the WebSVN server" value="${baseUrl}"/>
+	</div>
+
+	<div class="field-group">
+		<label for="websvn_path">Path</label>
+		<input class="text" type="text" id="websvn_path" name="websvn_path"
+			   title="Path starting from the baseurl" value="${path}"/>
+	</div>
+	<div class="field-group">
+		<div class="info">
+			<p>You can set the type of query for the WebSVN. By default, you will be redirected to the changeset view of
+			WebSVN. If you want to have any other view as your link target, you can set this by changing the query parameters.</p>
+			<p>
+				You can use variables within the query string. At the moment only the revision is available. Please
+				remember to add the question mark ("?") at the beginning of your query. This gives you the choice to
+				add anything you want before your query. You do not need to encode the url.
+			</p>
+			<ul style="border: 1px solid black; padding-top: 5px; padding-bottom: 5px;">
+				<li><strong>The changeset revision key:</strong> <tt>#revision#</tt></li>
+			</ul>
+			<p>If you enter no value, this one is the default: <tt>?op=revision&peg=#revision#&rev=#revision#</tt></p>
+		</div>
+		<label for="websvn_query">Query</label>
+		<input class="text" type="text" id="websvn_query" name="websvn_query"
+			   title="Query used to call the WebSVN" value="${query}"/>
+	</div>
+	<div class="field-group">
+		<div class="buttons-container">
+			<div class="buttons">
+				<input class="button submit" type="submit" value="Save" id="save-btn1">
+				<a class="cancel" href="${servletUrl}">Cancel</a>
+			</div>
+		</div>
+	</div>
+</form>

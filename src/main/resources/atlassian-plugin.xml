@@ -1,0 +1,92 @@
+<!--
+
+    Copyright 2010 Mario Mueller <mario.mueller.mac@me.com>
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<atlassian-plugin key="name.mariomueller.crucible.websvn-plugin" name="crucible-websvn-plugin" pluginsVersion="2">
+	<plugin-info>
+		<description>
+			This Plugin enables you to link changesets to a WebSVN instance.
+		</description>
+		<version>1.0.3-SNAPSHOT</version>
+		<vendor name="Mario Mueller" url="http://www.mariomueller.name"/>
+		<param name="configure.url">/plugins/servlet/websvn_global_settings</param>
+	</plugin-info>
+
+	<!-- Component Imports -->
+	<component-import key="pluginSettingsFactory"
+					  interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
+	<!-- / Component Imports -->
+
+	<!-- Redirect Servlet -->
+	<servlet name="Redirect WebSVN Servlet" key="websvn-redirect"
+			 class="name.mariomueller.crucible.plugins.websvn.servlets.RedirectServlet">
+		<description>Leitet auf Grund einer Revision und eines Crucible Repo Namens auf das WebSVN weiter</description>
+		<url-pattern>/websvn_redirect</url-pattern>
+	</servlet>
+
+	<web-item key="websvn-changeset-link" section="system.fisheye.changeset">
+		<link linkId="websvn_popup" absolute="true">
+			javascript:window.open(fishEyePageContext +
+			"/plugins/servlet/websvn_redirect?rev=${helper.changeset.csid}&amp;repo=${helper.repository.path}",
+			"WebSVN", "width=1024,height=768,status=yes,scrollbars=yes,resizable=yes,menubar=yes,location=yes");
+		</link>
+		<label key="Link zum WebSVN"/>
+	</web-item>
+
+	<web-resource key="websvn-javascript-enhancer" name="WebSVN JavaScript Enhanver">
+		<resource type="velocity" name="websvn-repo-link.js" location="websvn-repo-link.js"/>
+	</web-resource>
+
+	<!-- /Redirect Servlet -->
+
+	<!-- Global Configuration Servlet -->
+	<servlet name="WebSVN global config Servlet" key="websvn-global-config"
+			 class="name.mariomueller.crucible.plugins.websvn.servlets.GlobalSettingsServlet">
+		<description>Provides the config interface for the global plugin settings</description>
+		<url-pattern>/websvn_global_settings</url-pattern>
+		<init-param>
+			<param-name>path</param-name>
+			<param-value>/plugins/servlet/websvn_global_settings</param-value>
+		</init-param>
+
+	</servlet>
+	<web-item key="websvn-admin-global-settings" section="system.admin/global">
+		<link linkId="websvn_global_config" absolute="false">/plugins/servlet/websvn_global_settings</link>
+		<label key="WebSVN Config"/>
+	</web-item>
+	<!-- /Global Configuration Servlet -->
+
+	<!-- Per Repository Configuration -->
+	<servlet name="WebSVN repo config Servlet" key="websvn-repo-config"
+			 class="name.mariomueller.crucible.plugins.websvn.servlets.RepositorySettingsServlet">
+		<description>Provides the config interface for the repository bound plugin settings</description>
+		<url-pattern>/websvn_repo_settings</url-pattern>
+		<init-param>
+			<param-name>path</param-name>
+			<param-value>/plugins/servlet/websvn_repo_settings</param-value>
+		</init-param>
+
+	</servlet>
+	<web-item key="websvn-admin-repo-settings" section="system.admin.repo.operation">
+		<link linkId="websvn_repo_config" absolute="false">
+			/plugins/servlet/websvn_repo_settings?r=${helper.repository.path}
+		</link>
+		<label key="WebSVN"/>
+	</web-item>
+	<!-- /Per Repository Configuration -->
+
+</atlassian-plugin>
