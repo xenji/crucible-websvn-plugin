@@ -52,8 +52,8 @@
 	</developers>
 
 	<scm>
-		<url>https://xenji.codebasehq.com/cru-wsvn-plugin/core/</url>
-		<developerConnection>scm:git:git@codebasehq.com:xenji/cru-wsvn-plugin/core.git</developerConnection>
+		<url>https://bitbucket.org/xenji/crucible-websvn-plugin</url>
+		<developerConnection>scm:hg:https://bitbucket.org/xenji/crucible-websvn-plugin</developerConnection>
 	</scm>
 
 	<ciManagement>
@@ -62,8 +62,8 @@
 	</ciManagement>
 
 	<issueManagement>
-		<system>CodebaseHQ</system>
-		<url>https://xenji.codebasehq.com/cru-wsvn-plugin</url>
+		<system>Jira</system>
+		<url>https://studio.plugins.atlassian.com/browse/CRU-WSVNL</url>
 	</issueManagement>
 
 	<dependencies>
