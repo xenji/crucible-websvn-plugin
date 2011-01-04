@@ -100,6 +100,7 @@ public class RepositoryConfigurationServlet extends HttpServlet {
 		params.put("repositoryKey", repositoryConfig.getRepositoryKey());
 		params.put("contextPath", repositoryConfig.getContextPath());
 		params.put("servletUrl", req.getContextPath() + getServletConfig().getInitParameter("path"));
+		params.put("servletContext", req.getContextPath());
 		velocityHelper.renderVelocityTemplate("repository_settings.vm", params, resp.getWriter());
 	}
 }

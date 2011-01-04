@@ -43,7 +43,7 @@
 		<div class="buttons-container">
 			<div class="buttons">
 				<input class="button submit" type="submit" value="Save" id="save-btn1">
-				<a class="cancel" href="${servletUrl}">Cancel</a>
+				<a class="cancel" href="${servletContext}/admin/admin.do#repositories">Cancel</a>
 			</div>
 		</div>
 	</div>
