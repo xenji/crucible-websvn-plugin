@@ -23,7 +23,7 @@
 		</description>
 		<version>1-SNAPSHOT</version>
 		<vendor name="Mario Mueller" url="http://www.mariomueller.name"/>
-		<param name="configure.url">/plugins/servlet/websvn_global_settings</param>
+		<param name="configure.url">/plugins/servlet/websvn-global-settings</param>
 	</plugin-info>
 
 	<!-- Component Imports -->
@@ -31,62 +31,76 @@
 					  interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
 	<!-- / Component Imports -->
 
+	<!-- Components provided -->
+	<component key="websvn-general-configuration-storage-service"
+			   class="name.mariomueller.crucible.plugins.websvn.services.ConfigurationStoreService">
+		<description>Provides a storage service for the plugin settings.</description>
+	</component>
+	<!-- /Components provided -->
+
 	<!-- Redirect Servlet -->
-	<servlet name="Redirect WebSVN Servlet" key="websvn-redirect"
+	<servlet name="Redirect WebSVN Servlet" key="websvn-redirect-servlet"
 			 class="name.mariomueller.crucible.plugins.websvn.servlets.RedirectServlet">
-		<description>Leitet auf Grund einer Revision und eines Crucible Repo Namens auf das WebSVN weiter</description>
-		<url-pattern>/websvn_redirect</url-pattern>
+		<description>Redirects to the WebSVN view based on the configuration</description>
+		<url-pattern>/websvn-redirect</url-pattern>
 	</servlet>
 
-	<web-item key="websvn-changeset-link" section="system.fisheye.changeset">
-		<link linkId="websvn_popup" absolute="true">
+	<web-item key="websvn-general-changeset-link" section="system.fisheye.changeset">
+		<link linkId="websvn-general-changeset-link" absolute="true">
 			javascript:window.open(fishEyePageContext +
-			"/plugins/servlet/websvn_redirect?rev=${helper.changeset.csid}&amp;repo=${helper.repository.path}",
+			"/plugins/servlet/websvn-redirect?rev=${helper.changeset.csid}&amp;repo=${helper.repository.path}",
 			"WebSVN", "width=1024,height=768,status=yes,scrollbars=yes,resizable=yes,menubar=yes,location=yes");
 		</link>
-		<label key="Link zum WebSVN"/>
+		<label key="WebSVN"/>
 	</web-item>
 
 	<web-resource key="websvn-javascript-enhancer" name="WebSVN JavaScript Enhanver">
-		<resource type="velocity" name="websvn-repo-link.js" location="websvn-repo-link.js"/>
+		<resource type="download" name="websvn-repo-link.js" location="websvn-repo-link.js"/>
+		<context>atl.general</context>
 	</web-resource>
 
 	<!-- /Redirect Servlet -->
 
 	<!-- Global Configuration Servlet -->
-	<servlet name="WebSVN global config Servlet" key="websvn-global-config"
-			 class="name.mariomueller.crucible.plugins.websvn.servlets.GlobalSettingsServlet">
+	<servlet name="WebSVN global configuration servlet" key="websvn-admin-global-configuration-servlet"
+			 class="name.mariomueller.crucible.plugins.websvn.servlets.GlobalConfigurationServlet">
 		<description>Provides the config interface for the global plugin settings</description>
-		<url-pattern>/websvn_global_settings</url-pattern>
+		<url-pattern>/websvn-global-settings</url-pattern>
 		<init-param>
 			<param-name>path</param-name>
-			<param-value>/plugins/servlet/websvn_global_settings</param-value>
+			<param-value>/plugins/servlet/websvn-global-settings</param-value>
 		</init-param>
 
 	</servlet>
-	<web-item key="websvn-admin-global-settings" section="system.admin/global">
-		<link linkId="websvn_global_config" absolute="false">/plugins/servlet/websvn_global_settings</link>
-		<label key="WebSVN Config"/>
+	<web-item key="websvn-admin-global-configuration-link" section="system.admin/global">
+		<link linkId="websvn-admin-global-configuration-link" absolute="false">/plugins/servlet/websvn-global-settings
+		</link>
+		<label key="WebSVN"/>
 	</web-item>
 	<!-- /Global Configuration Servlet -->
 
 	<!-- Per Repository Configuration -->
-	<servlet name="WebSVN repo config Servlet" key="websvn-repo-config"
-			 class="name.mariomueller.crucible.plugins.websvn.servlets.RepositorySettingsServlet">
+	<servlet name="WebSVN repository configuration servlet" key="websvn-admin-repository-configuration-servlet"
+			 class="name.mariomueller.crucible.plugins.websvn.servlets.RepositoryConfigurationServlet">
 		<description>Provides the config interface for the repository bound plugin settings</description>
-		<url-pattern>/websvn_repo_settings</url-pattern>
+		<url-pattern>/websvn-repo-settings</url-pattern>
 		<init-param>
 			<param-name>path</param-name>
-			<param-value>/plugins/servlet/websvn_repo_settings</param-value>
+			<param-value>/plugins/servlet/websvn-repo-settings</param-value>
 		</init-param>
 
 	</servlet>
-	<web-item key="websvn-admin-repo-settings" section="system.admin.repo.operation">
-		<link linkId="websvn_repo_config" absolute="false">
-			/plugins/servlet/websvn_repo_settings?r=${helper.repository.path}
+	<web-item key="websvn-admin-repository-configuration-link" section="system.admin.repo.operation">
+		<link linkId="websvn-admin-repository-configuration" absolute="false">
+			/plugins/servlet/websvn-repo-settings?r=${helper.repository.path}
 		</link>
 		<label key="WebSVN"/>
 	</web-item>
 	<!-- /Per Repository Configuration -->
 
+	<!-- Rest Service for setting and getting the configurations -->
+	<rest key="websvn-configuration-endpoint" path="/websvn-configuration" version="1.0">
+		<description>Configuration service for the global websvn plugin settings.</description>
+	</rest>
+	<!-- /Rest Service for setting and getting the configurations -->
 </atlassian-plugin>

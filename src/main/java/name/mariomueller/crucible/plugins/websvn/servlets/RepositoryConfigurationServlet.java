@@ -18,8 +18,8 @@ package name.mariomueller.crucible.plugins.websvn.servlets;
 
 import com.atlassian.crucible.spi.services.RepositoryService;
 import com.atlassian.fisheye.plugin.web.helpers.VelocityHelper;
-import com.atlassian.sal.api.pluginsettings.PluginSettings;
-import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
+import name.mariomueller.crucible.plugins.websvn.data.RepositoryConfigurationWrapper;
+import name.mariomueller.crucible.plugins.websvn.services.ConfigurationStoreService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,20 +34,21 @@ import java.util.Map;
  * Date: 31.12.10
  * Time: 10:54
  */
-public class RepositorySettingsServlet extends HttpServlet {
+public class RepositoryConfigurationServlet extends HttpServlet {
 
-	private PluginSettingsFactory settingsFactory;
 
 	private VelocityHelper velocityHelper;
 
 	private RepositoryService repositoryService;
 
-	public PluginSettingsFactory getSettingsFactory() {
-		return settingsFactory;
+	private ConfigurationStoreService storeService;
+
+	public ConfigurationStoreService getStoreService() {
+		return storeService;
 	}
 
-	public void setSettingsFactory(PluginSettingsFactory settingsFactory) {
-		this.settingsFactory = settingsFactory;
+	public void setStoreService(ConfigurationStoreService storeService) {
+		this.storeService = storeService;
 	}
 
 	public VelocityHelper getVelocityHelper() {
@@ -71,19 +72,13 @@ public class RepositorySettingsServlet extends HttpServlet {
 		req.setAttribute("decorator", "atl.admin");
 		resp.setContentType("text/html");
 
-		String r = req.getParameter("r");
+		String r = req.getParameter("repositoryKey");
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		PluginSettings settings = settingsFactory.createSettingsForKey(r);
+		RepositoryConfigurationWrapper repositoryConfig = getStoreService().getConfigForRepository(r);
 
-		String repo = (String) settings.get("websvn.repo");
-
-		if (repo == null) {
-			repo = "";
-		}
-
-		params.put("r", r);
-		params.put("repo", repo);
+		params.put("repositoryKey", repositoryConfig.getRepositoryKey());
+		params.put("contextPath", repositoryConfig.getContextPath());
 		params.put("servletUrl", req.getContextPath() + getServletConfig().getInitParameter("path"));
 		velocityHelper.renderVelocityTemplate("repository_settings.vm", params, resp.getWriter());
 	}
@@ -93,20 +88,17 @@ public class RepositorySettingsServlet extends HttpServlet {
 		req.setAttribute("decorator", "atl.admin");
 		resp.setContentType("text/html");
 
-		String r = req.getParameter("websvn_r");
-		String repo = req.getParameter("websvn_repo");
-
 		Map<String, Object> params = new HashMap<String, Object>();
-		PluginSettings settings = settingsFactory.createSettingsForKey(r);
 
-		if (repo == null) {
-			repo = "";
-		}
+		String repositoryKey = req.getParameter("websvn_repositoryKey");
+		String contextPath = req.getParameter("websvn_contextPath");
 
-		settings.put("websvn.repo", repo);
+		RepositoryConfigurationWrapper repositoryConfig = getStoreService().getConfigForRepository(repositoryKey);
+		repositoryConfig.setContextPath(contextPath);
+		getStoreService().store(repositoryConfig);
 
-		params.put("r", r);
-		params.put("repo", repo);
+		params.put("repositoryKey", repositoryConfig.getRepositoryKey());
+		params.put("contextPath", repositoryConfig.getContextPath());
 		params.put("servletUrl", req.getContextPath() + getServletConfig().getInitParameter("path"));
 		velocityHelper.renderVelocityTemplate("repository_settings.vm", params, resp.getWriter());
 	}

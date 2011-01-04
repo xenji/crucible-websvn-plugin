@@ -19,8 +19,10 @@ package name.mariomueller.crucible.plugins.websvn.servlets;
 import com.atlassian.crucible.spi.data.RepositoryData;
 import com.atlassian.crucible.spi.data.SvnRepositoryData;
 import com.atlassian.crucible.spi.services.RepositoryService;
-import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
+import name.mariomueller.crucible.plugins.websvn.data.GlobalConfigurationWrapper;
+import name.mariomueller.crucible.plugins.websvn.data.RepositoryConfigurationWrapper;
+import name.mariomueller.crucible.plugins.websvn.services.ConfigurationStoreService;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,16 @@ public class RedirectServlet extends HttpServlet {
 
 	private static final String DEFAULT_QUERY = "?op=revision&peg=#revision#&rev=#revision#";
 
+	private ConfigurationStoreService storeService;
+
+	public ConfigurationStoreService getStoreService() {
+		return storeService;
+	}
+
+	public void setStoreService(ConfigurationStoreService storeService) {
+		this.storeService = storeService;
+	}
+
 
 	public PluginSettingsFactory getSettingsFactory() {
 		return settingsFactory;
@@ -60,42 +72,39 @@ public class RedirectServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		String rev = request.getParameter("rev");
-		String repo = request.getParameter("repo");
+		String changesetId = request.getParameter("changesetId");
+		String repositoryKey = request.getParameter("repositoryKey");
 
-		if (rev == null || repo == null) {
-			response.sendRedirect(request.getHeader("Referer"));
+		if (changesetId == null || repositoryKey == null) {
+			response.setStatus(500);
+			response.flushBuffer();
 		}
 
-		repo = repo.replace("/", "");
+		repositoryKey = repositoryKey.replace("/", "");
 
-		RepositoryData repoData = getRepositoryService().getRepository(repo);
-		if (repoData instanceof SvnRepositoryData) {
+		RepositoryData repositoryData = getRepositoryService().getRepository(repositoryKey);
+		if (repositoryData instanceof SvnRepositoryData) {
+
+			GlobalConfigurationWrapper globalConfig = getStoreService().getGlobalConfig();
+			RepositoryConfigurationWrapper repositoryConfig = getStoreService().getConfigForRepository(repositoryKey);
 
 
-			PluginSettings settings = getSettingsFactory().createGlobalSettings();
-			String urlBaseUrl = (String) settings.get("websvn.baseUrl");
-			String urlBasePath = (String) settings.get("websvn.path");
-			String urlBaseQuery = (String) settings.get("websvn.query");
-
-			PluginSettings repoSettings = getSettingsFactory().createSettingsForKey(repo);
-			String urlRepoPath =  (String) repoSettings.get("websvn.repo");
-
-			if (urlBaseQuery == null || urlBaseQuery.equals("")) {
-				urlBaseQuery = DEFAULT_QUERY;
+			if (globalConfig.getQuery().equals("")) {
+				globalConfig.setQuery(DEFAULT_QUERY);
 			}
 
 			// URL
-			StringBuilder sb = new StringBuilder(urlBaseUrl);
+			StringBuilder sb = new StringBuilder(globalConfig.getBaseUrl());
 
 			// Path to WSVN
-			sb.append(urlBasePath);
+			sb.append(globalConfig.getPath());
+
 
 			// Path to repository
-			sb.append(urlRepoPath).append("/");
+			sb.append(repositoryConfig.getContextPath()).append("/");
 
 			// Query String
-			sb.append(urlBaseQuery.replace("#revision#", rev));
+			sb.append(globalConfig.getQuery().replace("#revision#", changesetId));
 
 			// Send the redirect
 			response.sendRedirect(sb.toString());

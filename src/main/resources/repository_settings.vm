@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *#
-<div class="gwt-Label GwbrbccL" id="admin-title"><h2>Repository Settings for &quot;${r}&quot;</h2></div>
+<div class="gwt-Label GwbrbccL" id="admin-title"><h2>Repository Settings for &quot;${repositoryKey}&quot;</h2></div>
 <form action="${servletUrl}" method="post" id="websvn_repo_settings" class="aui">
 	<div class="field-group">
 		<p>You can configure your WebSVN repository name here.</p>
@@ -33,11 +33,11 @@
 		</p>
 	</div>
 	<div class="field-group">
-		<input type="hidden" name="websvn_r" value="${r}"/>
-		<label for="websvn_repo">Repository context<span class="aui-icon icon-required"></span><span
+		<input type="hidden" name="websvn_repositoryKey" value="${repositoryKey}"/>
+		<label for="websvn_contextPath">Repository context<span class="aui-icon icon-required"></span><span
 				class="content"> required</span></label>
-		<input class="text" type="text" id="websvn_repo" name="websvn_repo"
-			   title="Base URL of the WebSVN server" value="${repo}"/>
+		<input class="text" type="text" id="websvn_contextPath" name="websvn_contextPath"
+			   title="The context path of the repository on the WebSVN server" value="${contextPath}"/>
 	</div>
 	<div class="field-group">
 		<div class="buttons-container">

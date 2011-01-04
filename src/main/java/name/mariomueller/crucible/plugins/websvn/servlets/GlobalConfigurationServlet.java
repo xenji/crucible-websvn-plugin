@@ -17,8 +17,8 @@
 package name.mariomueller.crucible.plugins.websvn.servlets;
 
 import com.atlassian.fisheye.plugin.web.helpers.VelocityHelper;
-import com.atlassian.sal.api.pluginsettings.PluginSettings;
-import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
+import name.mariomueller.crucible.plugins.websvn.data.GlobalConfigurationWrapper;
+import name.mariomueller.crucible.plugins.websvn.services.ConfigurationStoreService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,18 +33,18 @@ import java.util.Map;
  * Date: 30.12.10
  * Time: 21:15
  */
-public class GlobalSettingsServlet extends HttpServlet {
-
-	private PluginSettingsFactory settingsFactory;
+public class GlobalConfigurationServlet extends HttpServlet {
 
 	private VelocityHelper velocityHelper;
 
-	public PluginSettingsFactory getSettingsFactory() {
-		return settingsFactory;
+	private ConfigurationStoreService storeService;
+
+	public ConfigurationStoreService getStoreService() {
+		return storeService;
 	}
 
-	public void setSettingsFactory(PluginSettingsFactory settingsFactory) {
-		this.settingsFactory = settingsFactory;
+	public void setStoreService(ConfigurationStoreService storeService) {
+		this.storeService = storeService;
 	}
 
 	public VelocityHelper getVelocityHelper() {
@@ -59,32 +59,18 @@ public class GlobalSettingsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("decorator", "atl.admin");
 		resp.setContentType("text/html");
+
 		Map<String, Object> params = new HashMap<String, Object>();
-		PluginSettings settings = settingsFactory.createGlobalSettings();
+		GlobalConfigurationWrapper globalConfigurationWrapper = getStoreService().getGlobalConfig();
 
-		String baseUrl = (String) settings.get("websvn.baseUrl");
-		String path = (String) settings.get("websvn.path");
-		String query = (String) settings.get("websvn.query");
 
-		if (baseUrl == null) {
-			baseUrl = "";
-		}
-
-		if (path == null) {
-			path = "";
-		}
-
-		if (query == null) {
-			query = "";
-		}
-
-		params.put("baseUrl", baseUrl);
-		params.put("path", path);
-		params.put("query", query);
+		params.put("baseUrl", globalConfigurationWrapper.getBaseUrl());
+		params.put("path", globalConfigurationWrapper.getPath());
+		params.put("query", globalConfigurationWrapper.getQuery());
 
 		params.put("servletUrl", req.getContextPath() + getServletConfig().getInitParameter("path"));
 
-		velocityHelper.renderVelocityTemplate("global_settings.vm", params, resp.getWriter());
+		getVelocityHelper().renderVelocityTemplate("global_settings.vm", params, resp.getWriter());
 	}
 
 	@Override
@@ -92,35 +78,20 @@ public class GlobalSettingsServlet extends HttpServlet {
 		req.setAttribute("decorator", "atl.admin");
 		resp.setContentType("text/html");
 
-		PluginSettings settings = settingsFactory.createGlobalSettings();
 		Map<String, Object> params = new HashMap<String, Object>();
+		GlobalConfigurationWrapper globalConfig = getStoreService().getGlobalConfig();
 
-		String baseUrl = req.getParameter("websvn_baseUrl");
-		String path = req.getParameter("websvn_path");
-		String query = req.getParameter("websvn_query");
+		globalConfig.setBaseUrl(req.getParameter("websvn_baseUrl"));
+		globalConfig.setPath(req.getParameter("websvn_path"));
+		globalConfig.setQuery(req.getParameter("websvn_query"));
+		getStoreService().store(globalConfig);
 
-		if (baseUrl == null) {
-			baseUrl = "";
-		}
-
-		if (path == null) {
-			path = "";
-		}
-
-		if (query == null) {
-			query = "";
-		}
-
-		settings.put("websvn.baseUrl", baseUrl);
-		settings.put("websvn.path", path);
-		settings.put("websvn.query", query);
-
-		params.put("baseUrl", baseUrl);
-		params.put("path", path);
-		params.put("query", query);
+		params.put("baseUrl", globalConfig.getBaseUrl());
+		params.put("path", globalConfig.getPath());
+		params.put("query", globalConfig.getQuery());
 
 		params.put("servletUrl", req.getContextPath() + getServletConfig().getInitParameter("path"));
 
-		velocityHelper.renderVelocityTemplate("global_settings.vm", params, resp.getWriter());
+		getVelocityHelper().renderVelocityTemplate("global_settings.vm", params, resp.getWriter());
 	}
 }
