@@ -47,8 +47,8 @@ public class ConfigurationStoreService {
 	public RepositoryConfigurationWrapper getConfigForRepository(String repositoryKey) {
 		PluginSettings repositorySettings = getSettingsFactory().createSettingsForKey(repositoryKey);
 		RepositoryConfigurationWrapper repositoryConfigurationWrapper = new RepositoryConfigurationWrapper();
+		repositoryConfigurationWrapper.setRepositoryKey(repositoryKey);
 		repositoryConfigurationWrapper.setDataFromSettings(repositorySettings);
-
 		return repositoryConfigurationWrapper;
 	}
 

@@ -1,10 +1,13 @@
 package name.mariomueller.crucible.plugins.websvn.rest;
-import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
+import name.mariomueller.crucible.plugins.websvn.data.RepositoryConfigurationWrapper;
+import name.mariomueller.crucible.plugins.websvn.services.ConfigurationStoreService;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBElement;
 
 
 /**
@@ -13,18 +16,32 @@ import javax.ws.rs.core.MediaType;
  * Time: 20:28
  */
 @Path("/repository")
-@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class RepositoryConfigurationEndpoint {
 
-	private PluginSettingsFactory settingsFactory;
+	private ConfigurationStoreService storageService;
 
-	public PluginSettingsFactory getSettingsFactory() {
-		return settingsFactory;
+	public ConfigurationStoreService getStorageService() {
+		return storageService;
 	}
 
-	public void setSettingsFactory(PluginSettingsFactory settingsFactory) {
-		this.settingsFactory = settingsFactory;
+	public void setStorageService(ConfigurationStoreService storageService) {
+		this.storageService = storageService;
 	}
 
+	@GET
+	@Path("/{repositoryKey}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response getRepositoryConfigurationResource(@PathParam("repositoryKey") String repositoryKey) {
+		RepositoryConfigurationWrapper repositoryConfig = getStorageService().getConfigForRepository(repositoryKey);
+		return Response.ok(repositoryConfig).build();
+	}
+
+	@PUT
+	@Path("/{repositoryKey}")
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response setRepositoryConfigurationResource(@PathParam("repositoryKey") String repositoryKey,
+													   JAXBElement<RepositoryConfigurationWrapper> repositoryConfig) {
+		getStorageService().store(repositoryConfig.getValue());
+		return Response.ok(repositoryConfig.getValue()).build();
+	}
 }

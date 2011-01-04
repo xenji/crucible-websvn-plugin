@@ -2,17 +2,31 @@ package name.mariomueller.crucible.plugins.websvn.data;
 
 import com.atlassian.sal.api.pluginsettings.PluginSettings;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * User: mario
  * Date: 04.01.11
  * Time: 20:31
  */
+@XmlRootElement(name = "websvn-global-configuration")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GlobalConfigurationWrapper {
 
+	public GlobalConfigurationWrapper() {}
+
+	private static final String DEFAULT_QUERY = "?op=revision&peg=#revision#&rev=#revision#";
+
+	@XmlElement(name = "base-url")
 	private String baseUrl;
 
+	@XmlElement(name = "path")
 	private String path;
 
+	@XmlElement(name = "query")
 	private String query;
 
 	public String getBaseUrl() {
@@ -39,12 +53,15 @@ public class GlobalConfigurationWrapper {
 	}
 
 	public String getQuery() {
+		if (query == null || query.equals("")) {
+			query = DEFAULT_QUERY;
+		}
 		return query;
 	}
 
 	public void setQuery(String query) {
-		if (query == null) {
-			query = "";
+		if (query == null || query.equals("")) {
+			query = DEFAULT_QUERY;
 		}
 		this.query = query;
 	}

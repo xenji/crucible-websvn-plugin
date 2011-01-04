@@ -72,14 +72,15 @@ public class RepositoryConfigurationServlet extends HttpServlet {
 		req.setAttribute("decorator", "atl.admin");
 		resp.setContentType("text/html");
 
-		String r = req.getParameter("repositoryKey");
+		String repositoryKey = req.getParameter("repositoryKey");
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		RepositoryConfigurationWrapper repositoryConfig = getStoreService().getConfigForRepository(r);
+		RepositoryConfigurationWrapper repositoryConfig = getStoreService().getConfigForRepository(repositoryKey);
 
 		params.put("repositoryKey", repositoryConfig.getRepositoryKey());
 		params.put("contextPath", repositoryConfig.getContextPath());
 		params.put("servletUrl", req.getContextPath() + getServletConfig().getInitParameter("path"));
+		params.put("servletContext", req.getContextPath());
 		velocityHelper.renderVelocityTemplate("repository_settings.vm", params, resp.getWriter());
 	}
 

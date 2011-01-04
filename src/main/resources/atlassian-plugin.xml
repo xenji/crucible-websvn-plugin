@@ -48,7 +48,7 @@
 	<web-item key="websvn-general-changeset-link" section="system.fisheye.changeset">
 		<link linkId="websvn-general-changeset-link" absolute="true">
 			javascript:window.open(fishEyePageContext +
-			"/plugins/servlet/websvn-redirect?rev=${helper.changeset.csid}&amp;repo=${helper.repository.path}",
+			"/plugins/servlet/websvn-redirect?changesetId=${helper.changeset.csid}&amp;repositoryKey=${helper.repository.path}",
 			"WebSVN", "width=1024,height=768,status=yes,scrollbars=yes,resizable=yes,menubar=yes,location=yes");
 		</link>
 		<label key="WebSVN"/>
@@ -92,7 +92,7 @@
 	</servlet>
 	<web-item key="websvn-admin-repository-configuration-link" section="system.admin.repo.operation">
 		<link linkId="websvn-admin-repository-configuration" absolute="false">
-			/plugins/servlet/websvn-repo-settings?r=${helper.repository.path}
+			/plugins/servlet/websvn-repo-settings?repositoryKey=${helper.repository.path}
 		</link>
 		<label key="WebSVN"/>
 	</web-item>

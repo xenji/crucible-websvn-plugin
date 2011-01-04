@@ -88,11 +88,6 @@ public class RedirectServlet extends HttpServlet {
 			GlobalConfigurationWrapper globalConfig = getStoreService().getGlobalConfig();
 			RepositoryConfigurationWrapper repositoryConfig = getStoreService().getConfigForRepository(repositoryKey);
 
-
-			if (globalConfig.getQuery().equals("")) {
-				globalConfig.setQuery(DEFAULT_QUERY);
-			}
-
 			// URL
 			StringBuilder sb = new StringBuilder(globalConfig.getBaseUrl());
 

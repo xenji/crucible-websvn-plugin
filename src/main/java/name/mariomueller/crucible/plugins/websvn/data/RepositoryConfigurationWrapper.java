@@ -2,15 +2,23 @@ package name.mariomueller.crucible.plugins.websvn.data;
 
 import com.atlassian.sal.api.pluginsettings.PluginSettings;
 
+import javax.xml.bind.annotation.*;
+
 /**
  * User: mario
  * Date: 04.01.11
  * Time: 20:31
  */
+@XmlRootElement(name = "websvn-repository-configuration")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RepositoryConfigurationWrapper {
 
+	public RepositoryConfigurationWrapper() {}
+
+	@XmlAttribute(name = "repository-key")
 	private String repositoryKey;
 
+	@XmlElement(name = "context-path")
 	private String contextPath;
 
 	public String getContextPath() {
