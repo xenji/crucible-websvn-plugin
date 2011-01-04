@@ -16,7 +16,7 @@
 
 -->
 
-<atlassian-plugin key="name.mariomueller.crucible.websvn-plugin" name="crucible-websvn-plugin" pluginsVersion="2">
+<atlassian-plugin key="name.mariomueller.crucible.websvn-plugin" name="Crucible WebSVN Linker" pluginsVersion="2">
 	<plugin-info>
 		<description>
 			This Plugin enables you to link changesets to a WebSVN instance.
