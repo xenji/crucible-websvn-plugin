@@ -1,6 +1,5 @@
 syntax: glob
 
-.svn*
 target
 target/**
 .idea
