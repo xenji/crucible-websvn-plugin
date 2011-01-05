@@ -8,9 +8,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * User: mario
- * Date: 04.01.11
- * Time: 20:31
+ * Defines the WebSVN global configuration as an
+ * JAXB annotated bean. This bean is used for
+ * the REST services and for the ConfigurationStoreService.
+ *
+ * @author Mario Mueller <mario.mueller.mac@me.com>
  */
 @XmlRootElement(name = "websvn-global-configuration")
 @XmlAccessorType(XmlAccessType.FIELD)
