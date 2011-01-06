@@ -23,7 +23,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>name.mariomueller.crucible.plugins</groupId>
 	<artifactId>websvn-plugin</artifactId>
-	<version>1-SNAPSHOT</version>
+	<version>1.0.4</version>
 	<name>Crucible WebSVN Plugin</name>
 	<inceptionYear>2010</inceptionYear>
 
