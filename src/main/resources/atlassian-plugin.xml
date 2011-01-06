@@ -21,7 +21,7 @@
 		<description>
 			This Plugin enables you to link changesets to a WebSVN instance.
 		</description>
-		<version>1.0.4</version>
+		<version>1-SNAPSHOT</version>
 		<vendor name="Mario Mueller" url="http://www.mariomueller.name"/>
 		<param name="configure.url">/plugins/servlet/websvn-global-settings</param>
 	</plugin-info>
