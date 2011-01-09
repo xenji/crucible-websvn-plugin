@@ -63,10 +63,23 @@
 
 	<issueManagement>
 		<system>Jira</system>
-		<url>https://studio.plugins.atlassian.com/browse/CRU-WSVNL</url>
+		<url>https://studio.plugins.atlassian.com/browse/WSVNL</url>
 	</issueManagement>
 
+	<distributionManagement>
+		<site>
+			<id>websvn-site.marioueller.name</id>
+			<url>scp://site.mariomueller.name/var/www/WSVNL/site/</url>
+		</site>
+	</distributionManagement>
+
 	<dependencies>
+		<dependency>
+			<groupId>com.atlassian.core</groupId>
+			<artifactId>atlassian-core</artifactId>
+			<version>4.5.5</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
