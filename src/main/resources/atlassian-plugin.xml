@@ -46,27 +46,14 @@
 	</servlet>
 
 	<web-item key="websvn-general-changeset-link" section="system.fisheye.changeset">
-		<param name="param0">$webResourceManager.requireResourcesForContext("atl.general")</param>
 		<link linkId="websvn-general-changeset-link" absolute="true">
-			javascript:window.open(fishEyePageContext +
-			"/plugins/servlet/websvn-redirect?changesetId=${helper.changeset.csid}&amp;repositoryKey=${helper.repository.path}",
-			"WebSVN", "width=1024,height=768,status=yes,scrollbars=yes,resizable=yes,menubar=yes,location=yes");
+			javascript:WSVNL.openWindow("${helper.changeset.csid}","${helper.repository.path}");
 		</link>
-		<dependency>name.mariomueller.crucible.websvn-plugin:websvn-javascript-enhancer</dependency>
 		<label key="WebSVN"/>
-	</web-item>
-
-	<web-item key="websvn-general-header-hack" section="system.header.item">
-		<param name="param0">$webResourceManager.requireResourcesForContext("atl.general")</param>
-		<link linkId="websvn-general-header-hack" absolute="true">
-		<![CDATA[javascript:jQuery('head').append('<script type=\'text/javascript\' src=\'{0}\'></script>');]]>
-		</link>
-		<label key=" "/>
 	</web-item>
 
 	<web-resource key="websvn-javascript-enhancer" name="WebSVN JavaScript Enhanver">
 		<resource type="download" name="websvn-repo-link.js" location="websvn-repo-link.js"/>
-		<param name="param0">$webResourceManager.requireResourcesForContext("atl.general")</param>
 		<context>atl.general</context>
 	</web-resource>
 	<!-- /Redirect Servlet -->

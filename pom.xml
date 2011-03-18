@@ -204,7 +204,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.5</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -215,8 +215,8 @@
 	</reporting>
 
 	<properties>
-		<fecru.version>2.4.3-20101126023954</fecru.version>
-		<fecru.data.version>2.4.3-20101126023954</fecru.data.version>
+		<fecru.version>2.5.2-20110307050326</fecru.version>
+		<fecru.data.version>2.5.2-20110307050326</fecru.data.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
 		<atlassian.dev.mode>true</atlassian.dev.mode>

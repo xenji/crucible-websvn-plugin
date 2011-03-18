@@ -2,6 +2,6 @@ syntax: glob
 
 target
 target/**
-.idea
+.idea*
 .idea/**
 *.iml

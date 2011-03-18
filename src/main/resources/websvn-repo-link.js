@@ -13,7 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+window.WSVNL = window.WSVNL || {};
+/*
+javascript:window.open(FECRU.pageContext +
+			"/plugins/servlet/websvn-redirect?changesetId=${helper.changeset.csid}&amp;repositoryKey=${helper.repository.path}",
+			"WebSVN", "width=1024,height=768,status=yes,scrollbars=yes,resizable=yes,menubar=yes,location=yes");
+ */
 
-function($){
-	alert("Works!");
-}(jQuery);
+/**
+ * Opens a new window for the WebSVN View
+ * @param changesetId The ChangesetId
+ * @param repositoryPath The path in the repository
+ * @return void
+ */
+WSVNL.openWindow = function(changesetId, repositoryPath) {
+	var baseUrl = FECRU.pageContext + "/plugins/servlet/websvn-redirect";
+	var url = baseUrl + "?changesetId=" + changesetId + "&repositoryKey=" + repositoryPath;
+	window.open(url, "WebSVN", "width=1024,height=768,status=yes,scrollbars=yes,resizable=yes,menubar=yes,location=yes");
+}
